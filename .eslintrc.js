@@ -35,8 +35,8 @@ module.exports = {
       'vue': 'never'
     }],
     'key-spacing': [1, { mode: 'strict' }],
+    'no-console': 0,
     'max-len': [1, 100],
-    'no-console': 2,
     'no-multi-spaces': 1,
     'object-curly-spacing': [1, 'always'],
     'semi': [2, 'never'],
