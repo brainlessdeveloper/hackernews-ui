@@ -6,6 +6,6 @@ describe('Index.vue', () => {
   it('has a unit test', () => {
     const Constructor = Vue.extend(Index)
     const vm = new Constructor().$mount()
-    expect(vm.length).to.be(1)
+    return expect(vm.$el.textContent).to.be.defined
   })
 })
