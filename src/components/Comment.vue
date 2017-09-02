@@ -1,6 +1,8 @@
 <template>
   <li class='comment'>
-    <div v-html='comment.comment_text'></div>
+    <em>{{ comment.author }}</em>
+    <span>{{ comment.created_at | moment('from', 'now') }}</span>
+    <div v-html='comment.comment_text' />
     <ul>
       <comment
         v-for='reply in comment.replies'
@@ -8,11 +10,17 @@
         :comment='reply'
       />
     </ul>
+    <hr />
   </li>
 </template>
 
 <script>
+import Vue from 'vue'
+import moment from 'vue-moment'
+
 import Comment from './Comment'
+
+Vue.use(moment)
 
 export default {
   name: 'comment',

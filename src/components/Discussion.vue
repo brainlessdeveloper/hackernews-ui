@@ -2,7 +2,6 @@
   <div class='discussion'>
     <a :href='link.url' target='_blank'><h1>{{ link.title }}</h1></a>
     <div v-html='link.text'></div>
-    <h2>Comments</h2>
     <ul>
       <comment
         v-for='comment in comments'
@@ -19,7 +18,7 @@ import axios from 'axios'
 import Comment from './Comment'
 
 const fetchLink = id => `http://hn.algolia.com/api/v1/items/${id}`
-const commentsFor = id => `http://hn.algolia.com/api/v1/search?tags=comment,story_${id}`
+const commentsFor = id => `http://hn.algolia.com/api/v1/search_by_date?tags=comment,story_${id}`
 
 const commentTree = (comments, story) => {
   const replies = parent => ({
