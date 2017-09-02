@@ -4,9 +4,11 @@
     <div v-html='link.text'></div>
     <h2>Comments</h2>
     <ul>
-      <li v-for='comment in comments'>
-        <div v-html='comment.comment_text'></div>
-      </li>
+      <comment
+        v-for='comment in comments'
+        :key='comment.objectID'
+        :comment='comment'
+      />
     </ul>
   </div>
 </template>
@@ -14,8 +16,20 @@
 <script>
 import axios from 'axios'
 
+import Comment from './Comment'
+
 const fetchLink = id => `http://hn.algolia.com/api/v1/items/${id}`
 const commentsFor = id => `http://hn.algolia.com/api/v1/search?tags=comment,story_${id}`
+
+const commentTree = (comments, story) => {
+  const replies = parent => ({
+    ...parent,
+    replies: comments.filter(com => com.parent_id === parseInt(parent.objectID, 10)).map(replies),
+  })
+  return comments
+    .filter(com => com.parent_id === story)
+    .map(replies)
+}
 
 export default {
   props: ['id'],
@@ -24,6 +38,9 @@ export default {
     errors: [],
     comments: [],
   }),
+  components: {
+    comment: Comment,
+  },
 
   async created() {
     try {
@@ -33,7 +50,7 @@ export default {
         { params: { hitsPerPage: 1000 } }
       )
       this.link = linkResponse.data
-      this.comments = commentsResponse.data.hits
+      this.comments = commentTree(commentsResponse.data.hits, parseInt(this.id, 10))
     } catch (e) {
       this.errors.push(e)
     }
