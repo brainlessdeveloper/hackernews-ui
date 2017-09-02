@@ -15,7 +15,7 @@
 <script>
 import axios from 'axios'
 
-const TOP_LINKS = 'http://hn.algolia.com/api/v1/search_by_date?tags=story'
+const TOP_LINKS = 'http://hn.algolia.com/api/v1/search?tags=front_page'
 
 export default {
   data: () => ({
