@@ -1,6 +1,9 @@
 <template>
   <div class='index'>
     <h1>Hackernews UI</h1>
+    <a :href='this.$HN_PORTAL_BASE + "submit"' target='_blank'>
+      Submit a new story
+    </a>
     <ul>
       <li v-for='link in links'>
         <span>[{{ link.points }}]</span>
@@ -15,7 +18,7 @@
 <script>
 import axios from 'axios'
 
-const TOP_LINKS = 'http://hn.algolia.com/api/v1/search?tags=front_page'
+const topLinks = base => `${base}search?tags=front_page`
 
 export default {
   data: () => ({
@@ -25,7 +28,7 @@ export default {
 
   async created() {
     try {
-      const response = await axios.get(TOP_LINKS)
+      const response = await axios.get(topLinks(this.$SHN_API_BASE))
       this.links = response.data.hits
     } catch (e) {
       this.errors.push(e)

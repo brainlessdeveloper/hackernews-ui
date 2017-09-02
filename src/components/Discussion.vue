@@ -1,7 +1,8 @@
 <template>
-  <div class='discussion'>
+  <div v-if='link.title' class='discussion'>
     <a :href='link.url' target='_blank'><h1>{{ link.title }}</h1></a>
     <div v-html='link.text'></div>
+    <a :href='this.$HN_PORTAL_BASE + "item?id=" + id' target='_blank'>Add a comment</a>
     <ul>
       <comment
         v-for='comment in comments'
@@ -17,8 +18,8 @@ import axios from 'axios'
 
 import Comment from './Comment'
 
-const fetchLink = id => `http://hn.algolia.com/api/v1/items/${id}`
-const commentsFor = id => `http://hn.algolia.com/api/v1/search_by_date?tags=comment,story_${id}`
+const fetchLink = (base, id) => `${base}items/${id}`
+const commentsFor = (base, id) => `${base}search_by_date?tags=comment,story_${id}`
 
 const commentTree = (comments, story) => {
   const replies = parent => ({
@@ -43,9 +44,9 @@ export default {
 
   async created() {
     try {
-      const linkResponse = await axios.get(fetchLink(this.id))
+      const linkResponse = await axios.get(fetchLink(this.$SHN_API_BASE, this.id))
       const commentsResponse = await axios.get(
-        commentsFor(this.id),
+        commentsFor(this.$SHN_API_BASE, this.id),
         { params: { hitsPerPage: 1000 } }
       )
       this.link = linkResponse.data

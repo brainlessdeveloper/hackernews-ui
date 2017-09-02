@@ -3,6 +3,7 @@
     <em>{{ comment.author }}</em>
     <span>{{ comment.created_at | moment('from', 'now') }}</span>
     <div v-html='comment.comment_text' />
+    <a :href='this.$HN_PORTAL_BASE + "reply?id=" + comment.objectID' target='_blank'>Reply</a>
     <ul>
       <comment
         v-for='reply in comment.replies'
