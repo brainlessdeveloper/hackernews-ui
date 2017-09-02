@@ -1,8 +1,14 @@
 # hackernews-ui
 
-> An interface for Hackernews which aims to make it easier to read and write comments
+A [Vue.js](https://vuejs.org/) interface for Hacker News which aims to make it easier to read and write comments
 
-## Build Setup
+This is a pet project I'm using to learn how to use [Vue.js](https://vuejs.org/). I don't like the UI for comments in [Hacker News](https://news.ycombinator.com/) so my plan is to build a new one with (better) foldable comments, and eventually live notifications.
+
+For indices and comment fetching I'm using [Search Hacker News](https://hn.algolia.com/api) and I'm planning to use [the official HackerNews API](https://github.com/HackerNews/API), which uses Firebase, for live notifications.
+
+Feel free to contribute!
+
+## Build setup
 
 ``` bash
 # install dependencies
@@ -19,12 +25,4 @@ npm run build --report
 
 # run unit tests
 npm run unit
-
-# run e2e tests
-npm run e2e
-
-# run all tests
-npm test
 ```
-
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
