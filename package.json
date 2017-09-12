@@ -13,9 +13,11 @@
   },
   "dependencies": {
     "axios": "^0.16.2",
+    "immutability-helper": "^2.3.1",
     "node-sass": "^4.0.0",
     "normalize.css": "^7.0.0",
     "redux": "^3.7.2",
+    "redux-belt": "^0.3.0",
     "redux-saga": "^0.15.6",
     "revue": "^3.0.0",
     "sass-loader": "^6.0.6",
