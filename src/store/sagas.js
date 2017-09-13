@@ -15,6 +15,12 @@ export const asyncStory = belt.simpleAsync({
 
 export const asyncComments = belt.simpleAsync({
   effect: storyId => [api.comments, storyId],
+  afterSuccess: (response, storyId) => ([
+    commentsActions.buildTree({
+      comments: response.data.hits,
+      story: { id: storyId },
+    }),
+  ]),
 })
 
 export default function* sagas() {

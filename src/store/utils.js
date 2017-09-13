@@ -11,3 +11,13 @@ export const crudActionsNamespace = (...args) => (
     ? belt.strict(belt.actionsIncludingCrud(...args))
     : belt.actionsIncludingCrud(...args)
 )
+
+export const tree = (comments, story) => {
+  const replies = parent => ({
+    ...parent,
+    replies: comments.filter(com => com.parent_id === parseInt(parent.objectID, 10)).map(replies),
+  })
+  return comments
+    .filter(com => `${com.parent_id}` === `${story.id}`)
+    .map(replies)
+}

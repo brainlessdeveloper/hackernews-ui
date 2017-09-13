@@ -1,7 +1,7 @@
 <template>
-  <div v-if='link.title' class='discussion'>
-    <a :href='link.url' target='_blank'><h1>{{ link.title }}</h1></a>
-    <div v-html='link.text'></div>
+  <div v-if='story.title' class='discussion'>
+    <a :href='story.url' target='_blank'><h1>{{ story.title }}</h1></a>
+    <div v-html='story.text'></div>
     <a :href='this.$HN_PORTAL_BASE + "item?id=" + id' target='_blank'>Add a comment</a>
     <ul>
       <comment
@@ -14,48 +14,31 @@
 </template>
 
 <script>
-import axios from 'axios'
+import { connect } from 'revux'
+
+import { storiesActions, commentsActions } from '../store/actions'
 
 import Comment from './Comment'
 
-const fetchLink = (base, id) => `${base}items/${id}`
-const commentsFor = (base, id) => `${base}search_by_date?tags=comment,story_${id}`
-
-const commentTree = (comments, story) => {
-  const replies = parent => ({
-    ...parent,
-    replies: comments.filter(com => com.parent_id === parseInt(parent.objectID, 10)).map(replies),
-  })
-  return comments
-    .filter(com => com.parent_id === story)
-    .map(replies)
+const mapState = state => ({
+  story: state.stories.single,
+  comments: state.comments.trees[state.stories.single.id],
+})
+const mapProps = {
+  fetchComments: commentsActions.fetchIndex,
+  fetchStory: storiesActions.fetchSingle,
 }
 
-export default {
+export default connect(mapState, mapProps)({
   props: ['id'],
-  data: () => ({
-    link: {},
-    errors: [],
-    comments: [],
-  }),
   components: {
     comment: Comment,
   },
-
-  async created() {
-    try {
-      const linkResponse = await axios.get(fetchLink(this.$SHN_API_BASE, this.id))
-      const commentsResponse = await axios.get(
-        commentsFor(this.$SHN_API_BASE, this.id),
-        { params: { hitsPerPage: 1000 } }
-      )
-      this.link = linkResponse.data
-      this.comments = commentTree(commentsResponse.data.hits, parseInt(this.id, 10))
-    } catch (e) {
-      this.errors.push(e)
-    }
+  created() {
+    this.fetchStory(this.id)
+    this.fetchComments(this.id)
   },
-}
+})
 </script>
 
 <style scoped>
