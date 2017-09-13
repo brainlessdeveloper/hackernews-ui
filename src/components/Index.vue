@@ -5,36 +5,29 @@
       Submit a new story
     </a>
     <ul>
-      <li v-for='link in links'>
-        <span>[{{ link.points }}]</span>
-        <a :href='link.url'>{{ link.title }}</a>
-        <em>{{ link.author }}</em>
-        <router-link :to='"/discuss/" + link.objectID'>{{ link.num_comments }} comments</router-link>
+      <li v-for='story in stories'>
+        <span>[{{ story.points }}]</span>
+        <a :href='story.url'>{{ story.title }}</a>
+        <em>{{ story.author }}</em>
+        <router-link :to='"/discuss/" + story.objectID'>{{ story.num_comments }} comments</router-link>
       </li>
     </ul>
   </div>
 </template>
 
 <script>
-import axios from 'axios'
+import { connect } from 'revux'
 
-const topLinks = base => `${base}search?tags=front_page`
+import { storiesActions } from '../store/actions'
 
-export default {
-  data: () => ({
-    links: [],
-    errors: [],
-  }),
+const mapState = state => ({ stories: state.stories.index })
+const mapProps = { fetchStories: storiesActions.fetchIndex }
 
-  async created() {
-    try {
-      const response = await axios.get(topLinks(this.$SHN_API_BASE))
-      this.links = response.data.hits
-    } catch (e) {
-      this.errors.push(e)
-    }
+export default connect(mapState, mapProps)({
+  created() {
+    this.fetchStories()
   },
-}
+})
 </script>
 
 <style scoped>

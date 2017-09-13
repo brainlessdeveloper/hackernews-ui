@@ -1,9 +1,11 @@
 import Vue from 'vue'
+import revux from 'revux'
 
 import App from './App'
 import router from './router'
 
 Vue.config.productionTip = false
+Vue.use(revux)
 
 const globals = {
   HN_PORTAL_BASE: 'https://news.ycombinator.com/',
