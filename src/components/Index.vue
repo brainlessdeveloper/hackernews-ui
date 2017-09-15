@@ -24,7 +24,7 @@ const mapState = state => ({ stories: state.stories.index })
 const mapProps = { fetchStories: storiesActions.fetchIndex }
 
 export default connect(mapState, mapProps)({
-  created() {
+  mounted() {
     this.fetchStories()
   },
 })
