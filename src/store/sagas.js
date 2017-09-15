@@ -1,13 +1,21 @@
 import * as belt from 'redux-belt'
 
-import { fork, takeLatest } from 'redux-saga/effects'
+import { fork, takeLatest, call, put } from 'redux-saga/effects'
 
 import * as api from './api'
 import { storiesActions, commentsActions } from './actions'
 
-export const asyncStories = belt.simpleAsync({
-  effect: params => [api.stories, params],
-})
+const INDEX_PAGE_SIZE = 30
+
+export function* asyncStories(action) {
+  try {
+    const { data: ids } = yield call(api.stories, action.payload)
+    const responses = yield Promise.all(ids.slice(0, INDEX_PAGE_SIZE).map(api.story))
+    yield put({ type: storiesActions.FETCH_INDEX_SUCCESS, payload: responses.map(res => res.data) })
+  } catch (err) {
+    console.log(err)
+  }
+}
 
 export const asyncStory = belt.simpleAsync({
   effect: id => [api.story, id],
