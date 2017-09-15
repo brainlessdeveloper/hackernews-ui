@@ -1,15 +1,18 @@
 <template>
-  <div v-if='story.title' class='discussion'>
-    <a :href='story.url' target='_blank'><h1>{{ story.title }}</h1></a>
-    <div v-html='story.text'></div>
-    <a :href='this.$HN_PORTAL_BASE + "item?id=" + id' target='_blank'>Add a comment</a>
-    <ul>
-      <comment
-        v-for='comment in comments'
-        :key='comment.objectID'
-        :comment='comment'
-      />
-    </ul>
+  <div class='discussion'>
+    <div v-if='loading'>Loading...</div>
+    <div v-else>
+      <a :href='story.url' target='_blank'><h1>{{ story.title }}</h1></a>
+      <div v-html='story.text'></div>
+      <a :href='this.$HN_PORTAL_BASE + "item?id=" + id' target='_blank'>Add a comment</a>
+      <ul>
+        <comment
+          v-for='comment in comments'
+          :key='comment.objectID'
+          :comment='comment'
+        />
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -23,6 +26,7 @@ import Comment from './Comment'
 const mapState = state => ({
   story: state.stories.single,
   comments: state.comments.trees[state.stories.single.id],
+  loading: state.comments.loading.index || state.stories.loading.single,
 })
 const mapProps = {
   fetchComments: commentsActions.fetchIndex,
@@ -34,7 +38,7 @@ export default connect(mapState, mapProps)({
   components: {
     comment: Comment,
   },
-  created() {
+  mounted() {
     this.fetchStory(this.id)
     this.fetchComments(this.id)
   },
