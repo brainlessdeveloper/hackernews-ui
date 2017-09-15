@@ -20,7 +20,7 @@ import { connect } from 'revux'
 
 import { storiesActions } from '../store/actions'
 
-const mapState = state => ({ stories: state.stories.index })
+const mapState = { stories: state => state.stories.index }
 const mapProps = { fetchStories: storiesActions.fetchIndex }
 
 export default connect(mapState, mapProps)({

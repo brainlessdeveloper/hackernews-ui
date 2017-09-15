@@ -23,11 +23,11 @@ import { storiesActions, commentsActions } from '../store/actions'
 
 import Comment from './Comment'
 
-const mapState = state => ({
-  story: state.stories.single,
-  comments: state.comments.trees[state.stories.single.id],
-  loading: state.comments.loading.index || state.stories.loading.single,
-})
+const mapState = {
+  story: state => state.stories.single,
+  comments: state => state.comments.trees[state.stories.single.id],
+  loading: state => state.comments.loading.index || state.stories.loading.single,
+}
 const mapProps = {
   fetchComments: commentsActions.fetchIndex,
   fetchStory: storiesActions.fetchSingle,
