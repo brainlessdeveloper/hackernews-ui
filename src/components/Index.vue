@@ -5,12 +5,11 @@
       Submit a new story
     </a>
     <ul>
-      <li v-for='story in stories'>
-        <span>[{{ story.score }}]</span>
-        <a :href='story.url' target='_blank'>{{ story.title }}</a>
-        <em>{{ story.author }}</em>
-        <router-link :to='"/discuss/" + story.id'>{{ story.descendants }} comments</router-link>
-      </li>
+      <story
+        v-for='story in stories'
+        :story='story'
+        key='story.id'
+      />
     </ul>
   </div>
 </template>
@@ -20,10 +19,17 @@ import { connect } from 'revux'
 
 import { storiesActions } from '../store/actions'
 
+import Story from './Story'
+
 const mapState = { stories: state => state.stories.index }
 const mapProps = { fetchStories: storiesActions.fetchIndex }
 
-export default connect(mapState, mapProps)({ name: 'index' })
+export default connect(mapState, mapProps)({
+  name: 'index',
+  components: {
+    story: Story,
+  },
+})
 </script>
 
 <style scoped>
