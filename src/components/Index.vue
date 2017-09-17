@@ -6,10 +6,10 @@
     </a>
     <ul>
       <li v-for='story in stories'>
-        <span>[{{ story.points }}]</span>
-        <a :href='story.url'>{{ story.title }}</a>
+        <span>[{{ story.score }}]</span>
+        <a :href='story.url' target='_blank'>{{ story.title }}</a>
         <em>{{ story.author }}</em>
-        <router-link :to='"/discuss/" + story.objectID'>{{ story.num_comments }} comments</router-link>
+        <router-link :to='"/discuss/" + story.id'>{{ story.descendants }} comments</router-link>
       </li>
     </ul>
   </div>
@@ -23,11 +23,7 @@ import { storiesActions } from '../store/actions'
 const mapState = { stories: state => state.stories.index }
 const mapProps = { fetchStories: storiesActions.fetchIndex }
 
-export default connect(mapState, mapProps)({
-  mounted() {
-    this.fetchStories()
-  },
-})
+export default connect(mapState, mapProps)({ name: 'index' })
 </script>
 
 <style scoped>

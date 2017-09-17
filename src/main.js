@@ -4,6 +4,8 @@ import revux from 'revux'
 import App from './App'
 import router from './router'
 
+import './store/firebase'
+
 Vue.config.productionTip = false
 Vue.use(revux)
 
