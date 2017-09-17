@@ -1,6 +1,6 @@
 import Firebase from 'firebase'
 
-import { dispatchLiveItems } from './utils'
+import { dispatchRefs } from './utils'
 import { storiesActions } from './actions'
 
 import store from './'
@@ -13,7 +13,7 @@ const database = Firebase.initializeApp(config).database()
 
 // This function is impure and is only meant to reduce boilerplate
 const connectItems = (route, success) =>
-  dispatchLiveItems(route, database, items => store.dispatch({
+  dispatchRefs(route, database, items => store.dispatch({
     type: success,
     payload: items,
   }))
