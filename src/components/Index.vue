@@ -6,9 +6,9 @@
     </a>
     <ul>
       <story
-        v-for='story in stories'
-        :story='story'
-        key='story.id'
+        v-for='reference in stories'
+        :reference='reference'
+        key='reference.key'
       />
     </ul>
   </div>
