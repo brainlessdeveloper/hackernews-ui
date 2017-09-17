@@ -21,3 +21,13 @@ export const tree = (comments, story) => {
     .filter(com => `${com.parent_id}` === `${story.id}`)
     .map(replies)
 }
+
+export const dispatchLiveItems = (route, database, success, amount = 30) => {
+  database.ref(route).on('value', (indexSnapshot) => {
+    Promise.all(indexSnapshot.val()
+      .slice(0, amount)
+      .map(id => database.ref(`v0/item/${id}`))
+      .map(itemRef => itemRef.once('value'))
+    ).then(itemSnapshots => success(itemSnapshots.map(item => item.val())))
+  })
+}
