@@ -22,11 +22,13 @@ export const tree = (comments, story) => {
     .map(replies)
 }
 
-export const dispatchRefs = (route, database, success, amount = 30) => {
-  database
-    .ref(route)
-    .limitToFirst(amount)
-    .on('value', (indexSnapshot) => {
-      success(indexSnapshot.val().map(id => database.ref(`v0/item/${id}`)))
-    })
-}
+export const buildIndexRefs = (route, database, amount = 30) => (
+  new Promise((resolve) => {
+    database
+      .ref(route)
+      .limitToFirst(amount)
+      .on('value', indexSnapshot => (
+        resolve(indexSnapshot.val().map(id => database.ref(`v0/item/${id}`))))
+      )
+  })
+)
