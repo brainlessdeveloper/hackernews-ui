@@ -23,9 +23,10 @@ export const tree = (comments, story) => {
 }
 
 export const dispatchRefs = (route, database, success, amount = 30) => {
-  database.ref(route).on('value', (indexSnapshot) => {
-    success(indexSnapshot.val()
-      .slice(0, amount)
-      .map(id => database.ref(`v0/item/${id}`)))
-  })
+  database
+    .ref(route)
+    .limitToFirst(amount)
+    .on('value', (indexSnapshot) => {
+      success(indexSnapshot.val().map(id => database.ref(`v0/item/${id}`)))
+    })
 }
