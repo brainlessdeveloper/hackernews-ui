@@ -1,6 +1,5 @@
 <template>
   <div class='index'>
-    <h1>Hackernews UI</h1>
     <a :href='this.$HN_PORTAL_BASE + "submit"' target='_blank'>
       Submit a new story
     </a>

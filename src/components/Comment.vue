@@ -11,7 +11,6 @@
         :comment='reply'
       />
     </ul>
-    <hr />
   </li>
 </template>
 
